@@ -13,6 +13,19 @@
 ###########################################################################
 import sys
 import os
-version = '.'.join(map(str, sys.version_info[:2]))
-print os.path.join(sys.prefix, 'include', 'python' + version)
+
+try:
+    import version
+    version = version.VERSION
+except ImportError:
+    version = '.'.join(map(str, sys.version_info[:2]))
+
+if len(sys.argv) > 1:
+    version = sys.argv[1]
+
+# Make compatible with both Python 2 and 3
+if sys.version_info[0] >= 3:
+    print(os.path.join(sys.prefix, 'include', 'python' + version))
+else:
+    print os.path.join(sys.prefix, 'include', 'python' + version)
 
